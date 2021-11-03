@@ -1,26 +1,25 @@
 import React from "react";
 import './App.css';
-import Header from './Components/Shared/Header/Header';
 import Footer from './Components/Shared/Footer/Footer';
 import Aside from './Components/Shared/Aside/Aside';
 import { Route } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
-import Profile from './Components/Profile/Profile';
+import ProfileContainer from './Components/Profile/ProfileContainer';
 import DialogsContainer from './Components/Dialogs/DialogsContainer';
+import FindUsersContainer from './Components/FindUsers/FindUsersContainer';
+import HeaderContainer from "./Components/Shared/Header/HeaderContainer";
 
 function App(props) {
 
     return (
         <div className="wrapper">
-            <BrowserRouter>
-                <Header />
-                <main className="row m-0">
-                    <Aside />
-                    <Route path='/Profile' render={ () => <Profile store={props.store} />} />
-                    <Route path='/Dialogs' render={ () => <DialogsContainer store={props.store} />} />
-                </main>
-                <Footer />
-            </BrowserRouter>
+            <HeaderContainer />
+            <main className="row m-0">
+                <Aside />
+                <Route path='/Profile/:userId?' render={() => <ProfileContainer />} />
+                <Route path='/Dialogs' render={() => <DialogsContainer />} />
+                <Route path='/FindUsers' render={() => <FindUsersContainer />} />
+            </main>
+            <Footer />
         </div>
     );
 }

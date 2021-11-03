@@ -19,7 +19,9 @@ function Dialogs(props) {
     }
     function sendMessage() {
         let newMessageValue = newMessageInput.current.value;
-        props.sendMessage(newMessageValue);
+        if (newMessageValue.length) {
+            props.sendMessage(newMessageValue);
+        }
 
         //Скролл в конец сообщений
         let dialog = document.getElementById("dialog-wrapper");
@@ -40,7 +42,7 @@ function Dialogs(props) {
                     </div>
                 </div>
                 <div className="col-12 col-sm-8 col-md-7 col-lg-9">
-                    <div id="dialog-wrapper" onLoad={scrollDialog} className="h-100 mb-3" style={{ backgroundColor: '#E0E0E0', overflowY: 'scroll', maxHeight: '80vh' }}>
+                    <div id="dialog-wrapper" className="h-100 mb-3" style={{ backgroundColor: '#E0E0E0', overflowY: 'scroll', maxHeight: '70vh' }}>
                         {messagesElements}
                     </div>
                     <div className="mx-3">

@@ -1,5 +1,6 @@
 const ADD_POST = 'ADD-POST';
 const UPDATE_POST_INPUT = 'UPDATE-POST-INPUT';
+const SET_USER_PROFILE = 'SET-USER-PROFILE';
 
 let _initialState = {
     postsData: [
@@ -17,29 +18,44 @@ let _initialState = {
         }
     ],
     newPostTitle: 'Title',
-    newPostText: 'Post text'
+    newPostText: 'Post text',
+    profile: null
 }
 
 function ProfileReducer(state = _initialState, action) {
     switch (action.type) {
-        case ADD_POST:
+        case ADD_POST: {
             let newPost = {
                 id: state.postsData.length + 1,
                 title: action.postTitle,
                 text: action.postText,
                 likeCount: 0
             };
-            state.postsData.push(newPost);
-            return state;
-
-        case UPDATE_POST_INPUT:
-            state.newPostTitle = action.postTitle;
-        state.newPostText = action.postText;
-            return state;
-
+            let stateCopy = {...state};
+            stateCopy.postsData = [...state.postsData];
+            stateCopy.postsData.push(newPost);
+            return stateCopy;
+        }
+        case UPDATE_POST_INPUT: {
+            let stateCopy = {...state};
+            stateCopy.newPostTitle = action.postTitle;
+            stateCopy.newPostText = action.postText;
+            return stateCopy;
+        }
+        case SET_USER_PROFILE: {
+            return {...state, profile: action.profile};
+        }
         default:
             return state;
     }
 }
+
+export function addPost(title, text) {
+    return { type: ADD_POST, postTitle: title, postText: text };
+}
+export function onChangePostInput(title, text) {
+    return { type: UPDATE_POST_INPUT, postTitle: title, postText: text };
+}
+export function setUserProfile(profile) { return { type: SET_USER_PROFILE, profile}; }
 
 export default ProfileReducer;

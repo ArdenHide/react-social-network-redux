@@ -33,22 +33,31 @@ let _initialState = {
 }
 
 function DialogsReducer(state = _initialState, action) {
-    switch (action.type) {
-        case UPDATE_NEW_MESSAGE_INPUT:
-            state.newMessage = action.newMessage;
-            return state;
+    let stateCopy = { ...state, messagesData: [...state.messagesData] };
 
-        case SEND_MESSAGE:
+    switch (action.type) {
+        case UPDATE_NEW_MESSAGE_INPUT: {
+            stateCopy.newMessage = action.newMessage;
+            return stateCopy;
+        }
+        case SEND_MESSAGE: {
             let newMessageItem = {
                 id: state.messagesData.length + 1,
                 message: action.newMessage
             };
-            state.messagesData.push(newMessageItem);
-            return state;
-
+            stateCopy.messagesData.push(newMessageItem);
+            return stateCopy;
+        }
         default:
             return state;
     }
+}
+
+export function updateNewMessageInput(message) {
+    return { type: UPDATE_NEW_MESSAGE_INPUT, newMessage: message };
+}
+export function sendMessage(message) {
+    return { type: SEND_MESSAGE, newMessage: message };
 }
 
 export default DialogsReducer;

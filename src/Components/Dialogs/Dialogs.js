@@ -2,7 +2,7 @@ import React from "react";
 import Message from './Message/Message';
 import DialogItem from './DialogItem/DialogItem';
 import { MDBBtn } from 'mdb-react-ui-kit';
-import { MDBInput } from 'mdb-react-ui-kit';
+import { Field, reduxForm } from "redux-form";
 
 function Dialogs(props) {
     let dialogsElements = props.dialogsData.map(d =>
@@ -11,28 +11,19 @@ function Dialogs(props) {
     let messagesElements = props.messagesData.map(m =>
         <Message key={m.id} message={m.message} />
     );
-    let newMessageInput = React.createRef();
 
-    function updateNewMessageInput() {
-        let newMessageValue = newMessageInput.current.value;
-        props.updateNewMessageInput(newMessageValue);
-    }
-    function sendMessage() {
-        let newMessageValue = newMessageInput.current.value;
-        if (newMessageValue.length) {
-            props.sendMessage(newMessageValue);
-        }
-
-        //Скролл в конец сообщений
-        let dialog = document.getElementById("dialog-wrapper");
-        dialog.scrollTop = dialog.scrollHeight;
-    }
     function scrollDialog() {
-        alert("Ya zagruzilsya");
         let dialog = document.getElementById("dialog-wrapper");
         dialog.scrollTop = dialog.scrollHeight;
     }
 
+    function submit(formData) {
+        if (formData.newMessage.length) {
+            props.sendMessage(formData.newMessage);
+        }
+        scrollDialog();
+        console.log(formData);
+    }
     return (
         <div className="col-12 col-md-9 col-lg-10">
             <div className="row h-100">
@@ -42,22 +33,30 @@ function Dialogs(props) {
                     </div>
                 </div>
                 <div className="col-12 col-sm-8 col-md-7 col-lg-9">
-                    <div id="dialog-wrapper" className="h-100 mb-3" style={{ backgroundColor: '#E0E0E0', overflowY: 'scroll', maxHeight: '70vh' }}>
+                    <div id="dialog-wrapper" className="h-100 mb-3" style={{ backgroundColor: '#E0E0E0', overflowY: 'scroll', maxHeight: '68vh' }}>
                         {messagesElements}
                     </div>
-                    <div className="mx-3">
-                        <div className="mb-3">
-                            <MDBInput onChange={updateNewMessageInput} value={props.newMessage} inputRef={newMessageInput}
-                                label='Message' textarea rows={2} />
-                        </div>
-                        <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
-                            <MDBBtn onClick={sendMessage}>Send message</MDBBtn>
-                        </div>
-                    </div>
+                    <ReduxSendMessageForm onSubmit={submit}/>
                 </div>
             </div>
         </div>
     );
 }
+
+function SendMessageForm(props) {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <div className="mx-3">
+                <div className="mb-3">
+                    <Field component={'textarea'} name={'newMessage'} placeholder="Enter message..." />
+                </div>
+                <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
+                    <MDBBtn >Send message</MDBBtn>
+                </div>
+            </div>
+        </form>
+    )
+}
+const ReduxSendMessageForm = reduxForm({ form: 'sendMessage' })(SendMessageForm)
 
 export default Dialogs;

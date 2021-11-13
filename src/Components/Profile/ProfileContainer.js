@@ -1,39 +1,42 @@
 import React from "react";
-import axios from "axios";
 import { connect } from 'react-redux';
 import Profile from "./Profile";
-import { setUserProfile } from './../../Redux/ProfileReducer';
+import { getProfile, getStatus, updateStatus } from './../../Redux/ProfileReducer';
 import { withRouter } from "react-router";
+import { WithAuthRedirect } from './../../Hoc/WithAuthRedirect';
+import { compose } from "redux";
 
 class ProfileAPI extends React.Component {
     componentDidMount() {
         let userId = this.props.match.params.userId;
-        if (userId != null) {
-            axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId).then(response => {
-                this.props.setUserProfile(response.data);
-            });
-        } else {
-            axios.get(`https://social-network.samuraijs.com/api/1.0/profile/12`).then(response => {
-                this.props.setUserProfile(response.data);
-            });
-        }
+        this.props.getProfile(userId);
+        this.props.getStatus(userId);
     }
 
     render() {
         return (
-            <Profile {...this.props} profile={this.props.profile} />
+            <Profile {...this.props}
+                profile={this.props.profile}
+                status={this.props.status}
+                updateStatus={this.props.updateStatus} />
         );
     }
 }
-
 function mapState(state) {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        status: state.profilePage.status
     };
 }
 let mapDispatch = {
-    setUserProfile
+    getProfile,
+    getStatus,
+    updateStatus
 }
-let withRouterProfileAPI = withRouter(ProfileAPI);
-const ProfileContainer = connect(mapState, mapDispatch)(withRouterProfileAPI);
+const ProfileContainer = compose(
+    connect(mapState, mapDispatch),
+    withRouter,
+    WithAuthRedirect
+)(ProfileAPI);
+
 export default ProfileContainer;

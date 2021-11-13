@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateNewMessageInput, sendMessage } from '../../Redux/DialogsReducer';
+import { sendMessage } from '../../Redux/DialogsReducer';
 import Dialogs from "./Dialogs";
+import { WithAuthRedirect } from './../../Hoc/WithAuthRedirect';
+import { compose } from "redux";
 
 class DialogsAPI extends React.Component {
     render() {
@@ -10,18 +12,19 @@ class DialogsAPI extends React.Component {
         );
     }
 }
-
 function mapState(state) {
     return {
         dialogsData: state.dialogsPage.dialogsData,
-        messagesData: state.dialogsPage.messagesData,
-        newMessage: state.dialogsPage.newMessage
+        messagesData: state.dialogsPage.messagesData
     };
 }
 let mapDispatch = {
-    updateNewMessageInput,
     sendMessage
 }
-const DialogsContainer = connect(mapState, mapDispatch)(DialogsAPI);
+
+const DialogsContainer = compose(
+    connect(mapState, mapDispatch),
+    WithAuthRedirect
+)(DialogsAPI);
 
 export default DialogsContainer;

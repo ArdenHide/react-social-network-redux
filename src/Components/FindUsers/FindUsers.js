@@ -6,7 +6,6 @@ import Preloader from "../Shared/Preloader/Preloader";
 import { NavLink } from 'react-router-dom';
 
 function FindUsers(props) {
-    let pageCount = Math.ceil(props.totalUsersCount / props.pageSize);
     let pages = [];
     for (let index = 1; index <= 5; index++) {
         pages.push(index);
@@ -49,11 +48,20 @@ function FindUsers(props) {
                     props.users.map(user =>
                         <div key={user.id} className="col-12 col-xl-6 d-flex mb-4">
                             <div className="d-flex flex-column">
-                                <img src={user.photos.small != null ? user.photos.small : userPhoto} />
+                                <img src={user.photos.small != null ? user.photos.small : userPhoto} alt="avatar" />
                                 {
                                     user.followed
-                                        ? <MDBBtn onClick={() => { props.unfollow(user.id) }} color='danger'>Unfollow</MDBBtn>
-                                        : <MDBBtn onClick={() => { props.follow(user.id) }} >Follow</MDBBtn>
+                                        ? <MDBBtn
+                                            disabled={props.isBlockedFollowBtn.some(id => id === user.id)}
+                                            onClick={() => { props.unfollow(user.id) }}
+                                            color='danger'>
+                                            Unfollow
+                                        </MDBBtn>
+                                        : <MDBBtn
+                                            disabled={props.isBlockedFollowBtn.some(id => id === user.id)}
+                                            onClick={() => { props.follow(user.id) }}>
+                                            Follow
+                                        </MDBBtn>
                                 }
                             </div>
                             <div className="d-flex flex-column p-3 border w-100">

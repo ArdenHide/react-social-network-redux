@@ -38,7 +38,10 @@ function Header(props) {
                                 <MDBIcon icon='bars' fas />
                             </MDBNavbarToggler>
                             {props.isAuth
-                                ? <MDBBtn color='dark'><MDBIcon icon='user' fas />{props.login}</MDBBtn>
+                                ? <div>
+                                    <MDBBtn className='me-2' color='dark'><MDBIcon className='me-2' icon='user' fas />{props.login}</MDBBtn>
+                                    <MDBBtn onClick={props.logout} color='dark'><MDBIcon className='me-2' icon='sign-out-alt' fas />Logout</MDBBtn>
+                                    </div>
                                 : <LoginModal />}
                         </div>
                 }

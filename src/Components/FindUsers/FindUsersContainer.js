@@ -6,8 +6,8 @@ import {
     getUsers
 } from './../../Redux/FindUsersReducer';
 import FindUsers from "./FindUsers";
-import { WithAuthRedirect } from './../../Hoc/WithAuthRedirect';
 import { compose } from "redux";
+import { selector } from './../../Redux/FindUsersSelectors';
 
 class FindUsersAPI extends React.Component {
     componentDidMount() {
@@ -34,11 +34,11 @@ class FindUsersAPI extends React.Component {
 
 function mapState(state) {
     return {
-        users: state.findUsersPage.users,
-        pageSize: state.findUsersPage.pageSize,
-        currentPage: state.findUsersPage.currentPage,
-        isFetching: state.findUsersPage.isFetching,
-        isBlockedFollowBtn: state.findUsersPage.isBlockedFollowBtn
+        users: selector.getUsers(state),
+        pageSize: selector.getPageSize(state),
+        currentPage: selector.getCurrentPage(state),
+        isFetching: selector.getIsFetching(state),
+        isBlockedFollowBtn: selector.getIsBlockedFollowBtn(state)
     };
 }
 let mapDispatch = {
@@ -47,8 +47,7 @@ let mapDispatch = {
     getUsers
 }
 const FindUsersContainer = compose(
-    connect(mapState, mapDispatch),
-    WithAuthRedirect
+    connect(mapState, mapDispatch)
 )(FindUsersAPI);
 
 export default FindUsersContainer;

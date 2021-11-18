@@ -4,6 +4,7 @@ import DialogsReducer from './DialogsReducer';
 import FindUsersReducer from './FindUsersReducer';
 import AuthReducer from './AuthReducer';
 import { reducer as formReducer } from 'redux-form';
+import AppReducer from './AppReducer';
 const { createStore, combineReducers, applyMiddleware } = require("redux");
 
 let reducers = combineReducers({
@@ -11,6 +12,7 @@ let reducers = combineReducers({
     dialogsPage: DialogsReducer,
     findUsersPage: FindUsersReducer,
     auth: AuthReducer,
+    app: AppReducer,
     form: formReducer
 });
 

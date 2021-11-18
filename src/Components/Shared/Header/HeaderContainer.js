@@ -1,13 +1,9 @@
 import React from "react";
 import Header from "./Header";
 import { connect } from 'react-redux';
-import { getUserData } from './../../../Redux/AuthReducer';
+import { logout } from './../../../Redux/AuthReducer';
 
 class HeaderAPI extends React.Component {
-    componentDidMount() {
-        this.props.getUserData();
-    }
-
     render() {
         return (
             <Header {...this.props} />
@@ -23,7 +19,7 @@ function mapState(state) {
     };
 }
 let mapDispatch = {
-    getUserData
+    logout
 }
 
 const HeaderContainer = connect(mapState, mapDispatch)(HeaderAPI);

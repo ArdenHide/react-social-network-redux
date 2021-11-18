@@ -1,36 +1,46 @@
-import { MDBBtn } from "mdb-react-ui-kit";
+import { MDBBtn, MDBValidation } from "mdb-react-ui-kit";
 import React from "react";
+import { Redirect } from "react-router";
 import { Field, reduxForm } from "redux-form";
-
+import { requiredField } from "../../Helpers/FormValidator";
+import { Email, Password, Checkbox } from "../Shared/FormControls/FormControls";
 function LoginForm(props) {
     return (
-        <form onSubmit={props.handleSubmit}>
-            <div className="mb-4">
-                <Field name={'userEmail'} component={'input'} placeholder={'Email'} />
-                <div id='userEmailLable' className='form-text'>
+        <MDBValidation onSubmit={props.handleSubmit} noValidate>
+            {props.error && <div className="text-danger mb-2">{props.error}</div>}
+            <div className="mb-5">
+                <div className='form-text mb-2'>
                     We'll never share your email with anyone else.
                 </div>
+                <Field name={'userEmail'} component={Email}
+                    validate={[requiredField]} required
+                    label="Email" labelClass="text-uppercase" />
             </div>
-            <div className="mb-4">
-                <Field name={'userPassword'} component={'input'} placeholder={'Password'} />
-                <div id='userPasswordLable' className='form-text'>
+            <div className="mb-5">
+                <div className='form-text mb-2'>
                     We'll never share your password with anyone else.
                 </div>
+                <Field name={'userPassword'} component={Password}
+                    validate={[requiredField]} required
+                    label="Password" labelClass="text-uppercase" />
             </div>
-            <div className="mb-4">
-                <Field name={'rememberMe'} component={'input'} type={'checkbox'} /> Remember me?
+            <div className="mb-5">
+                <Field name={'rememberMe'} component={Checkbox} id='rememberMe' label='Remember me?' />
             </div>
             <div className="d-grid gap-2 d-md-flex justify-content-md-start">
                 <MDBBtn>Sign in</MDBBtn>
             </div>
-        </form>
+        </MDBValidation>
     )
 }
 const ReduxLoginForm = reduxForm({ form: 'login' })(LoginForm)
 
 function Login(props) {
-    function submit (formData) {
-        console.log(formData);
+    function submit(formData) {
+        props.login(formData.userEmail, formData.userPassword, formData.rememberMe);
+    }
+    if (props.isAuth) {
+        return <Redirect to="/Profile" />
     }
     return (
         <div className="col-12 col-md-9 col-lg-10 p-0">

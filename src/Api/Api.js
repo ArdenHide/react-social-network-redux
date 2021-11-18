@@ -27,15 +27,11 @@ export const profileAPI = {
     getProfile(userId) {
         if (userId !== null && userId !== undefined) {
             return dbContext.get(`profile/` + userId);
-        } else {
-            return dbContext.get(`profile/12`);
         }
     },
     getStatus(userId) {
         if (userId !== null && userId !== undefined) {
             return dbContext.get(`profile/status/` + userId);
-        } else {
-            return dbContext.get(`profile/status/12`);
         }
     },
     updateStatus(status) {
@@ -46,5 +42,11 @@ export const profileAPI = {
 export const authAPI = {
     getUser() {
         return dbContext.get(`auth/me`);
+    },
+    login(email, password, rememberMe = false) {
+        return dbContext.post(`auth/login`, {email, password, rememberMe});
+    },
+    logout() {
+        return dbContext.delete(`auth/login`);
     }
 }

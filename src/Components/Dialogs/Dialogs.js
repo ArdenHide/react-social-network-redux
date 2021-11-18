@@ -1,8 +1,10 @@
 import React from "react";
 import Message from './Message/Message';
 import DialogItem from './DialogItem/DialogItem';
-import { MDBBtn } from 'mdb-react-ui-kit';
+import { MDBBtn, MDBValidation } from 'mdb-react-ui-kit';
 import { Field, reduxForm } from "redux-form";
+import { Textarea } from './../Shared/FormControls/FormControls';
+import { maxLengthCreator, requiredField } from "../../Helpers/FormValidator";
 
 function Dialogs(props) {
     let dialogsElements = props.dialogsData.map(d =>
@@ -36,25 +38,27 @@ function Dialogs(props) {
                     <div id="dialog-wrapper" className="h-100 mb-3" style={{ backgroundColor: '#E0E0E0', overflowY: 'scroll', maxHeight: '68vh' }}>
                         {messagesElements}
                     </div>
-                    <ReduxSendMessageForm onSubmit={submit}/>
+                    <ReduxSendMessageForm onSubmit={submit} />
                 </div>
             </div>
         </div>
     );
 }
-
+const maxLength50 = maxLengthCreator(50);
 function SendMessageForm(props) {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <MDBValidation onSubmit={props.handleSubmit} noValidate>
             <div className="mx-3">
-                <div className="mb-3">
-                    <Field component={'textarea'} name={'newMessage'} placeholder="Enter message..." />
+                <div className="mb-5">
+                    <Field component={Textarea} name={'newMessage'}
+                        validate={[requiredField, maxLength50]}
+                        label="Enter message" />
                 </div>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4">
-                    <MDBBtn >Send message</MDBBtn>
+                    <MDBBtn>Send message</MDBBtn>
                 </div>
             </div>
-        </form>
+        </MDBValidation>
     )
 }
 const ReduxSendMessageForm = reduxForm({ form: 'sendMessage' })(SendMessageForm)

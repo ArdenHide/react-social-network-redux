@@ -35,7 +35,6 @@ export const profileAPI = {
         }
     },
     updateStatus(status) {
-        alert(status);
         return dbContext.put(`profile/status`, { status: status });
     }
 }

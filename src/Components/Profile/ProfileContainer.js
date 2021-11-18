@@ -7,6 +7,7 @@ import { compose } from "redux";
 
 class ProfileAPI extends React.Component {
     componentDidMount() {
+        console.log("componentDidMount Profile");
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authUserId;
@@ -17,8 +18,12 @@ class ProfileAPI extends React.Component {
         this.props.getProfile(userId);
         this.props.getStatus(userId);
     }
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps !== this.props || nextState !== this.state;
+    }
 
     render() {
+        console.log("Render Profile");
         return (
             <Profile {...this.props}
                 profile={this.props.profile}

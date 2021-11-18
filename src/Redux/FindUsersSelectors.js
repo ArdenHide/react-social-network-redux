@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+
 export const selector = {
     getUsers(state) {
         return state.findUsersPage.users;
@@ -15,3 +17,7 @@ export const selector = {
         return state.findUsersPage.isBlockedFollowBtn;
     }
 }
+
+export const getUsersReselector = createSelector(selector.getUsers, (users) => {
+    return users.filter(u => true);
+});

@@ -7,7 +7,7 @@ import {
 } from './../../Redux/FindUsersReducer';
 import FindUsers from "./FindUsers";
 import { compose } from "redux";
-import { selector } from './../../Redux/FindUsersSelectors';
+import { getUsersReselector, selector } from './../../Redux/FindUsersSelectors';
 
 class FindUsersAPI extends React.Component {
     componentDidMount() {
@@ -34,7 +34,7 @@ class FindUsersAPI extends React.Component {
 
 function mapState(state) {
     return {
-        users: selector.getUsers(state),
+        users: getUsersReselector(state),
         pageSize: selector.getPageSize(state),
         currentPage: selector.getCurrentPage(state),
         isFetching: selector.getIsFetching(state),
